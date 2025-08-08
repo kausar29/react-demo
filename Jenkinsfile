@@ -28,23 +28,21 @@ pipeline {
             }
         }
 
-        stage('Deploy via SSH Plugin') {
-            steps {
-                sshPublisher(publishers: [
-                    sshPublisherDesc(
-                        configName: 'ubuntu3', // Jenkins SSH config name
-                        transfers: [
-                            sshTransfer(
-                                sourceFiles: 'build/**',
-                                removePrefix: 'build',
-                                remoteDirectory: '/var/www/react-demo',
-                                execCommand: ''
-                            )
-                        ],
-                        verbose: true
+       stage('Deploy via SSH Plugin') {
+    steps {
+        sshPublisher(publishers: [
+            sshPublisherDesc(
+                configName: 'ubuntu3',
+                transfers: [
+                    sshTransfer(
+                        sourceFiles: 'dist/**',
+                        removePrefix: 'dist',
+                        remoteDirectory: '/var/www/react-demo',
+                        execCommand: ''
                     )
-                ])
-            }
-        }
+                ],
+                verbose: true
+            )
+        ])
     }
 }
