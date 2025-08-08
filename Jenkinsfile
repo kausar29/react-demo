@@ -29,32 +29,20 @@ pipeline {
         }
 
         stage('Deploy via SSH Plugin') {
-            steps {
-                sshPublisher(
-                    publishers: [
-                        sshPublisherDesc(
-                            configName: 'ubuntu3',
-                            transfers: [
-                                sshTransfer(
-                                    sourceFiles: "build/**",
-                                    removePrefix: "build",
-                                    remoteDirectory: "${REMOTE_DIR}"
-                                )
-                            ],
-                            usePromotionTimestamp: false
-                        )
-                    ]
-                )
-            }
-        }
-    }
-
-    post {
-        success {
-            echo "✅ React app deployed successfully to ${REMOTE_DIR} on 192.168.0.11"
-        }
-        failure {
-            echo "❌ Deployment failed."
-        }
+    steps {
+        sshPublisher(publishers: [
+            sshPublisherDesc(
+                configName: 'ubuntu3', // The name you set in Jenkins Publish over SSH config
+                transfers: [
+                    sshTransfer(
+                        sourceFiles: 'dist/**',
+                        removePrefix: 'dist',
+                        remoteDirectory: '/var/www/react-demo',
+                        execCommand: ''
+                    )
+                ],
+                verbose: true
+            )
+        ])
     }
 }
