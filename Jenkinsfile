@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'nodebuilder'  // Make sure Node.js is configured in Jenkins tools
+        nodejs 'nodebuilder'
     }
 
     environment {
@@ -29,20 +29,22 @@ pipeline {
         }
 
         stage('Deploy via SSH Plugin') {
-    steps {
-        sshPublisher(publishers: [
-            sshPublisherDesc(
-                configName: 'ubuntu3', // The name you set in Jenkins Publish over SSH config
-                transfers: [
-                    sshTransfer(
-                        sourceFiles: 'dist/**',
-                        removePrefix: 'dist',
-                        remoteDirectory: '/var/www/react-demo',
-                        execCommand: ''
+            steps {
+                sshPublisher(publishers: [
+                    sshPublisherDesc(
+                        configName: 'ubuntu3', // Jenkins SSH config name
+                        transfers: [
+                            sshTransfer(
+                                sourceFiles: 'build/**',
+                                removePrefix: 'build',
+                                remoteDirectory: '/var/www/react-demo',
+                                execCommand: ''
+                            )
+                        ],
+                        verbose: true
                     )
-                ],
-                verbose: true
-            )
-        ])
+                ])
+            }
+        }
     }
 }
