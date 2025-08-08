@@ -33,7 +33,7 @@ pipeline {
                 sshPublisher(
                     publishers: [
                         sshPublisherDesc(
-                            configName: 'deploy-server',
+                            configName: 'ubuntu3',
                             transfers: [
                                 sshTransfer(
                                     sourceFiles: "build/**",
